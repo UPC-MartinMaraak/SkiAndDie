@@ -18,6 +18,7 @@ public class GameWorld {
     private InputHandler inputHandler;
     private ObstacleHandler obstacleHandler;
     private int score = 0;
+    private float tmpScore = 0.0f;
     private EGameState gameState = EGameState.WAITING;
 
     public GameWorld(){
@@ -53,8 +54,14 @@ public class GameWorld {
         skier.update(delta);
         obstacleHandler.update(delta);
         backgroundHandler.update(delta);
-        score = score + Math.round(skier.getSpeed()*delta/10);
+        if(skier.getState() == ESkierState.SKIING) {
+            tmpScore = tmpScore + (skier.getSpeed() * delta)/ 100;
 
+            if (tmpScore > 1) {
+                score = score + Math.round(tmpScore);
+                tmpScore = 0.0f;
+            }
+        }
         if(obstacleHandler.hasCollided(skier)){
             stopGame();
         }

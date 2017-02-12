@@ -20,13 +20,15 @@ public class AssetLoader {
 
     private static int numberOfSkierFrames = 15;
     public static Animation skierAnimation;
+    public static int skierHeight = 65;
+    private static int skierWidth = 65;
 
     private static int numberOfSprayFrames = 16;
     public static Animation snowSpray;
 
     public static TextureRegion skierDown, skierLeft, skierRight;
 
-    private static int numberOfTrees = 9;
+    private static int numberOfTrees = 12;
     public static TextureRegion[] trees;
 
     public static BitmapFont font,shadow;
@@ -53,7 +55,8 @@ public class AssetLoader {
         TextureRegion[] skierTextures = new TextureRegion[numberOfSkierFrames];
 
         for(int i = 0;i<numberOfSkierFrames;i++){
-            TextureRegion tmp = new TextureRegion(skierTexture,0,(64*i) +i*2,64,64);
+            TextureRegion tmp = new TextureRegion(skierTexture,0,(skierHeight*i) +i,skierWidth,skierHeight);
+            fixBleeding(tmp);
             tmp.flip(false,true);
             skierTextures[i] = tmp;
         }
@@ -66,7 +69,8 @@ public class AssetLoader {
         TextureRegion[] skierWaitTextures = new TextureRegion[numberOfSkierFrames];
 
         for(int i = 0;i<numberOfSkierFrames;i++){
-            TextureRegion tmp = new TextureRegion(skierTexture,66,(64*i) +i*2,64,64);
+            TextureRegion tmp = new TextureRegion(skierTexture,skierWidth+1,(skierHeight*i) +i,skierWidth,skierHeight);
+            fixBleeding(tmp);
             tmp.flip(false,true);
             skierWaitTextures[i] = tmp;
         }
@@ -78,8 +82,10 @@ public class AssetLoader {
         TextureRegion[] skierCrashedTextures = new TextureRegion[numberOfSkierFrames];
 
         for(int i = 0;i<numberOfSkierFrames;i++){
-            TextureRegion tmp = new TextureRegion(skierTexture,132,(64*i) +i*2,64,64);
+            TextureRegion tmp = new TextureRegion(skierTexture,(skierWidth*2)+2,(skierHeight*i) +i,skierWidth,skierHeight);
+            fixBleeding(tmp);
             tmp.flip(false,true);
+
             skierCrashedTextures[i] = tmp;
         }
 
@@ -99,6 +105,7 @@ public class AssetLoader {
 
         for(int i = 0;i<numberOfSprayFrames;i++){
             TextureRegion tmp = new TextureRegion(skierTexture,198,(32*i) +i,32,32);
+            fixBleeding(tmp);
             tmp.flip(false,true);
             sprayTextures[i] = tmp;
         }
@@ -110,6 +117,7 @@ public class AssetLoader {
 
         for(int i = 0; i<numberOfTrees;i++) {
             TextureRegion tree = new TextureRegion(texture, 629, (64*i) +i, 64, 64);
+            fixBleeding(tree);
             tree.flip(false, true);
             trees[i] = tree;
         }
@@ -124,6 +132,20 @@ public class AssetLoader {
     public static void dispose(){
         texture.dispose();
         font.dispose();
+    }
+
+
+    public static void fixBleeding(TextureRegion region) {
+        float fix = 0.5f;
+
+        float x = region.getRegionX();
+        float y = region.getRegionY();
+        float width = region.getRegionWidth();
+        float height = region.getRegionHeight();
+        float invTexWidth = 1f / region.getTexture().getWidth();
+        float invTexHeight = 1f / region.getTexture().getHeight();
+        region.setRegion((x + fix) * invTexWidth, (y + fix) * invTexHeight, (x + width - fix) * invTexWidth, (y + height - fix) * invTexHeight); // Trims
+        // region
     }
 
 

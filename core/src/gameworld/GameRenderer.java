@@ -58,21 +58,21 @@ public class GameRenderer {
 
     public void render() {
 
-        Gdx.gl.glClearColor(10,10,10,10);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+   //     Gdx.gl.glClearColor(10,10,10,10);
+        // Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
 
-
         spriteBatch.begin();
-        spriteBatch.disableBlending();
+       // spriteBatch.disableBlending();
 
         for(Background background : backgroundHandler.getBackgrounds()){
-            spriteBatch.draw(background.getTexture(),background.getPosition().x,background.getPosition().y,background.getTexture().getRegionWidth(),background.getTexture().getRegionHeight());
+             spriteBatch.draw(background.getTexture(),background.getPosition().x,background.getPosition().y,background.getTexture().getRegionWidth(),background.getTexture().getRegionHeight());
 
         }
 
 
         spriteBatch.enableBlending();
+       // spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         // Render skier
         Vector2 skierPos = skier.getPosition();
@@ -103,7 +103,7 @@ public class GameRenderer {
 
         if(! (skier.getState() == ESkierState.CRASHING )) {
             spriteBatch.draw(skierAnimation.getKeyFrame(stateTime, true),
-                    world.getSkier().getPosition().x, world.getSkier().getPosition().y, skier.getWidth(), skier.getSkierHeight());
+                    world.getSkier().getPosition().x, world.getSkier().getPosition().y,65,65);
         }else{
            if(!crashed){
                stateTime = 0;
@@ -116,12 +116,12 @@ public class GameRenderer {
 
 
             spriteBatch.draw(skierAnimation.getKeyFrame(stateTime, !done),
-                    world.getSkier().getPosition().x, world.getSkier().getPosition().y, skier.getWidth(), skier.getSkierHeight());
+                    world.getSkier().getPosition().x, world.getSkier().getPosition().y);
         }
 
         for(Obstacle obstacle : obstacleHandler.getObstacles()){
             spriteBatch.draw(obstacle.getTexture(),
-                    obstacle.getPosition().x, obstacle.getPosition().y, obstacle.getWidth(), obstacle.getHeight());
+                    obstacle.getPosition().x, obstacle.getPosition().y,128,128);
 
         }
 
